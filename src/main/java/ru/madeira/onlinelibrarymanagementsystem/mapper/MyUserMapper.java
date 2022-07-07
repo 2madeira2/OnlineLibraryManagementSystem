@@ -15,4 +15,9 @@ public class MyUserMapper {
                 .map(u -> new UserDTO(u.getId(), u.getSurname(), u.getName(), u.getPatronymic(), u.getBirthday(), u.getRoles().stream().map(Role::getName).collect(Collectors.toList()), u.getEmail(), u.getLogin(), u.getReadersTicketNumber(), u.getUserHistorySet()))
                 .collect(Collectors.toList());
     }
+
+    public UserDTO toDto(User u) {
+        return new UserDTO(u.getId(), u.getSurname(), u.getName(), u.getPatronymic(), u.getBirthday(), u.getRoles().stream().map(Role::getName).collect(Collectors.toList()), u.getEmail(), u.getLogin(), u.getReadersTicketNumber(), u.getUserHistorySet());
+    }
+
 }

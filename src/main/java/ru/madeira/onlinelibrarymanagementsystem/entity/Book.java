@@ -25,9 +25,6 @@ public class Book {
     @Column(nullable = false)
     private Integer year;
 
-    @Column(nullable = false)
-    private Integer quantity;
-
     @Column(nullable = false, length = 5000)
     private String description;
 
@@ -55,10 +52,9 @@ public class Book {
     )
     private Set<Tag> tags;
 
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "history_book")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     @ToString.Exclude
-    private Set<UserHistory> userHistorySet;
+    private Set<BookCopy> bookCopies;
 
     @Override
     public boolean equals(Object o) {

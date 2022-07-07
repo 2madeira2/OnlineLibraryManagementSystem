@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     List<User> findAll();
 
     Optional<User> findUserByReadersTicketNumber(Long readerTicketNumber);
@@ -16,5 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
 
     Optional<User> findUserByLogin(String login);
+
+    List<User> findAllByRolesName(String roleName);
+
+    boolean existsByLoginOrReadersTicketNumber(String login, Long readerTicketNumber);
 
 }

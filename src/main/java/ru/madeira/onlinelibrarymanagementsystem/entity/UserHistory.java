@@ -25,9 +25,9 @@ public class UserHistory {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_copy_id", nullable = false)
     @ToString.Exclude
-    private Book history_book;
+    private BookCopy historyBook;
 
     @Column(nullable = false)
     private LocalDate receiptDate;

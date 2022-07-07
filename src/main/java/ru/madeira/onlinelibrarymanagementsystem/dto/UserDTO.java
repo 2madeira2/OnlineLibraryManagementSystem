@@ -1,7 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.dto;
 
 import lombok.Data;
-import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
 
 import java.time.LocalDate;

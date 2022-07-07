@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

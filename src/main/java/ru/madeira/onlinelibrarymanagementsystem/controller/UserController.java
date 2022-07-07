@@ -1,20 +1,23 @@
 package ru.madeira.onlinelibrarymanagementsystem.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 
 import java.util.List;
 
-@RestController("/")
+@RestController
 public class UserController {
 
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping(value = "/users/{readersTicketNumber}")
+    public UserDTO findUserById(@PathVariable(value = "readersTicketNumber") Long readersTicketNumber) {
+        return userService.findUserByReadersTicketNumber(readersTicketNumber);
     }
 
     @GetMapping("/users")
@@ -24,6 +27,14 @@ public class UserController {
 
     @GetMapping("/readers")
     public List<UserDTO> getAllReaders() {
-        return userService.getAllUsers();
+        return userService.getAllReaders();
     }
+
+//    @PostMapping("/users")
+//    public UserDTO addNewUser(@RequestBody UserDTO user) {
+//        return userService.addNewUser(user);
+//    }
+
+
+
 }
