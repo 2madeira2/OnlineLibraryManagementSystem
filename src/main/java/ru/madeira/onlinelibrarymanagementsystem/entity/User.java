@@ -33,12 +33,13 @@ public class User {
 
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, unique = true)
     private Long readersTicketNumber;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

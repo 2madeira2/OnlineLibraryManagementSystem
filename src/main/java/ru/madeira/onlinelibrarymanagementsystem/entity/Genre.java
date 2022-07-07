@@ -19,7 +19,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 75)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
