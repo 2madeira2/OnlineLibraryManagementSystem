@@ -9,7 +9,6 @@ import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -18,8 +17,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/readers")
+    public List<UserDTO> getAllReaders() {
         return userService.getAllUsers();
     }
 }
