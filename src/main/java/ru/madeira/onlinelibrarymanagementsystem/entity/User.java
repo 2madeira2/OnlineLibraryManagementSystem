@@ -2,7 +2,6 @@ package ru.madeira.onlinelibrarymanagementsystem.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import ru.madeira.onlinelibrarymanagementsystem.util.SystemRole;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,10 +31,6 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SystemRole role;
-
     private String email;
 
     @Column(nullable = false)
@@ -49,6 +44,14 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
     private Set<UserHistory> userHistorySet;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_and_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {

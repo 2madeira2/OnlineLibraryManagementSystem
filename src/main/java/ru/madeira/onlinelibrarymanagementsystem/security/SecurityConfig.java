@@ -22,17 +22,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable()
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/users/**").hasAuthority("ADMIN")
+                .antMatchers("/readers/**").hasAnyAuthority("LIBRARIAN", "ADMIN")
+                .antMatchers("/login").permitAll()
                 .antMatchers("/**").authenticated()
-                .antMatchers("/users/**").hasRole("ADMIN")
-                .antMatchers("/readers/**").hasAnyRole("LIBRARIAN", "ADMIN")
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/books")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access_denied");
-//                .logout().logoutSuccessUrl("/");
         return http.build();
     }
 

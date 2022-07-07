@@ -8,7 +8,7 @@ import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 
 import java.util.List;
 
-@RestController
+@RestController("/")
 public class UserController {
 
     private final UserService userService;
