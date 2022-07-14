@@ -1,6 +1,7 @@
 package ru.madeira.onlinelibrarymanagementsystem.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 
@@ -34,7 +35,5 @@ public class UserController {
 //    public UserDTO addNewUser(@RequestBody UserDTO user) {
 //        return userService.addNewUser(user);
 //    }
-
-
 
 }

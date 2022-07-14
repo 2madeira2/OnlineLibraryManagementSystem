@@ -30,4 +30,9 @@ public class BookController {
     public BookDTO createBook(@RequestBody BookDTO book) {
         return bookService.createBook(book);
     }
+
+    @GetMapping
+    public List<BookDTO> getBooksByAuthor(@RequestParam String authorName) {
+        return bookService.findBookByAuthor(authorName);
+    }
 }
