@@ -31,9 +31,9 @@ public class UserController {
         return userService.getAllReaders();
     }
 
-//    @PostMapping("/users")
-//    public UserDTO addNewUser(@RequestBody UserDTO user) {
-//        return userService.addNewUser(user);
-//    }
+    @PostMapping("/users")
+    public UserDTO addNewUser(@RequestBody UserDTO user) {
+        return userService.addNewUser(user);
+    }
 
 }

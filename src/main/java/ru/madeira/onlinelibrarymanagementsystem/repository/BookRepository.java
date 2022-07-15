@@ -15,5 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findBooksByAuthorsSurnameContains(String authorsName);
     List<Book> findBooksByAuthorsNameContains(String authorsName);
     List<Book> findBooksByAuthorsPatronymicContains(String patronymic);
-
+    Boolean existsByTitleAndAuthorsSurnameAndAuthorsNameAndAuthorsPatronymic(String title, String authorsSurname, String authorsName, String authorsPatronymic);
 }

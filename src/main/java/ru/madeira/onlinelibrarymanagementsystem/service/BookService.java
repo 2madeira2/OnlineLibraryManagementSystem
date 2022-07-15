@@ -32,7 +32,7 @@ public class BookService {
         return bookMapper.toDto(bookRepository.save(bookMapper.toBook(book)));
     }
 
-    public List<BookDTO> findBookByAuthor(String authorName) {
+    public List<BookDTO> findBooksByAuthor(String authorName) {
         List<Book> books = new ArrayList<>(bookRepository.findBooksByAuthorsNameContains(authorName));
         books.addAll(bookRepository.findBooksByAuthorsSurnameContains(authorName));
         books.addAll(bookRepository.findBooksByAuthorsPatronymicContains(authorName));

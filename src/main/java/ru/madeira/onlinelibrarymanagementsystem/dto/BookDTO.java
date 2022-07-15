@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Author;

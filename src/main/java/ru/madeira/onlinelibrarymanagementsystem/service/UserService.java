@@ -7,7 +7,6 @@ import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.entity.User;
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserAlreadyExistsInSystemException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserNotFoundException;
-import ru.madeira.onlinelibrarymanagementsystem.mapper.MyUserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 
@@ -42,10 +41,10 @@ public class UserService {
         return userMapper.toDto(userRepository.findUserByReadersTicketNumber(readersTicketNumber).orElseThrow(UserNotFoundException::new));
     }
 
-//    public UserDTO addNewUser(UserDTO user) {
-//        if(userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
-//            throw new UserAlreadyExistsInSystemException();
-//        }
-//        return userMapper.toDto(userRepository.save(new User(user.getId(), user.getSurname(), user.getName(), user.getPatronymic(), user.getBirthday(), user.getEmail(), user.getLogin(), passwordEncoder.encode(user.getPassword()) user.getReadersTicketNumber(), new HashSet<>())));
-//    }
+    public UserDTO addNewUser(UserDTO user) {
+        if(userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
+            throw new UserAlreadyExistsInSystemException();
+        }
+        return userMapper.toDto(userRepository.save(userMapper.toUser(user)));
+    }
 }

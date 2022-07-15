@@ -6,7 +6,7 @@ import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BookMapper {
     BookDTO toDto(Book book);
     Book toBook(BookDTO book);

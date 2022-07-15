@@ -35,8 +35,8 @@ public class UserHistory {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @Column(nullable = false)
-    private Boolean hasBeenHanded;
+    @Column
+    private Boolean returnDate;
 
     @Override
     public boolean equals(Object o) {
