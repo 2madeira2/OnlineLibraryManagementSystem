@@ -16,6 +16,8 @@ public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private Boolean isBusy;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
