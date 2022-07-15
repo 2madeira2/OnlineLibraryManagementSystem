@@ -10,8 +10,6 @@ import ru.madeira.onlinelibrarymanagementsystem.exception.UserNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 @Service

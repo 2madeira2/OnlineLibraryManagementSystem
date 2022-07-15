@@ -36,7 +36,7 @@ public class UserHistory {
     private LocalDate releaseDate;
 
     @Column
-    private Boolean returnDate;
+    private LocalDate returnDate;
 
     @Override
     public boolean equals(Object o) {
