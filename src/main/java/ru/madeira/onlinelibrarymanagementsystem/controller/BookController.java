@@ -55,8 +55,10 @@ public class BookController {
         bookCopyService.lendBookCopy(bookCopyId);
     }
 
+    @DeleteMapping
+    public void scrapBookCopyByBookCopyId(@RequestParam Long bookCopyId) {
+        bookCopyService.scrapBookCopyByBookCopyId(bookCopyId);
+    }
 
-
-    
 
 }

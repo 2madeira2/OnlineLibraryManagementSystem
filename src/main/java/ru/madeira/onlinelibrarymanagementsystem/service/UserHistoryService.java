@@ -6,7 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
+import ru.madeira.onlinelibrarymanagementsystem.entity.User;
 import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
+import ru.madeira.onlinelibrarymanagementsystem.exception.DebtsExistenceException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.FreeBookCopiesNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.UserHistoryMapper;
@@ -48,11 +50,15 @@ public class UserHistoryService {
     }
 
     public Long createNewUserHistoryRecord(Long bookId) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        User currentUser = userRepository.findUserByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        if(userHistoryRepository.existsByUserIdAndReturnDateIsNull(currentUser.getId())) {
+            throw new DebtsExistenceException();
+        }
         BookCopy bookCopy = bookCopyRepository.findBookCopyByBookIdAndIsBusyFalse(bookId).orElseThrow(FreeBookCopiesNotFoundException::new);
         Long bookCopyId = bookCopy.getId();
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         UserHistory userHistory = new UserHistory();
-        userHistory.setUser(userRepository.findUserByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new));
+        userHistory.setUser(currentUser);
         userHistory.setHistoryBook(bookCopy);
         LocalDate receiptDate = LocalDate.now();
         userHistory.setReceiptDate(receiptDate);

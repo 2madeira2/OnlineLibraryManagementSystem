@@ -22,4 +22,8 @@ public class BookCopyService {
         bookCopy.setIsBusy(false);
         bookCopyRepository.save(bookCopy);
     }
+
+    public void scrapBookCopyByBookCopyId(Long bookCopyId) {
+        bookCopyRepository.deleteById(bookCopyId);
+    }
 }
