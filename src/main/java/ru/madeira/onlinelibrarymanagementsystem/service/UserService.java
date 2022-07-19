@@ -11,6 +11,7 @@ import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -39,10 +40,14 @@ public class UserService {
         return userMapper.toDto(userRepository.findUserByReadersTicketNumber(readersTicketNumber).orElseThrow(UserNotFoundException::new));
     }
 
-    public UserDTO addNewUser(UserDTO user) {
+    public UserDTO createNewUser(UserDTO user) {
         if(userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
             throw new UserAlreadyExistsInSystemException();
         }
         return userMapper.toDto(userRepository.save(userMapper.toUser(user)));
+    }
+
+    public UserDTO getUserById(Long id) {
+         return userMapper.toDto(userRepository.findUserById(id).orElseThrow(UserNotFoundException::new));
     }
 }

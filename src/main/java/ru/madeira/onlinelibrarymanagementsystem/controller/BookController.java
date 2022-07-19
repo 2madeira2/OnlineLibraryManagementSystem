@@ -2,13 +2,11 @@ package ru.madeira.onlinelibrarymanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
-import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookService;
+import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
 
 import java.util.List;
 
@@ -18,6 +16,7 @@ public class BookController {
 
     private BookService bookService;
     private BookCopyService bookCopyService;
+    private UserHistoryService userHistoryService;
 
     @Autowired
     public void setBookService(BookService bookService) {
@@ -27,6 +26,11 @@ public class BookController {
     @Autowired
     public void setBookCopyService(BookCopyService bookCopyService) {
         this.bookCopyService = bookCopyService;
+    }
+
+    @Autowired
+    public void setUserHistoryService(UserHistoryService userHistoryService) {
+        this.userHistoryService = userHistoryService;
     }
 
     @GetMapping()
@@ -46,11 +50,12 @@ public class BookController {
     }
 
     @PostMapping("/{bookId}/lend")
-    public void lendBook(@PathVariable Long bookId, @RequestParam Long readersTicketNumber) {
-        bookCopyService.lendBookCopy(bookId);
-
-        //TODO: ЗАПИСЬ О ТОМ, ЧТО ПОЛЬЗОВАТЕЛЮ ВЫДАНА КНИГА В ИСТОРИЮ ПОЛЬЗОВАТЕЛЯ
+    public void lendBook(@PathVariable Long bookId) {
+        Long bookCopyId = userHistoryService.createNewUserHistoryRecord(bookId);
+        bookCopyService.lendBookCopy(bookCopyId);
     }
+
+
 
     
 

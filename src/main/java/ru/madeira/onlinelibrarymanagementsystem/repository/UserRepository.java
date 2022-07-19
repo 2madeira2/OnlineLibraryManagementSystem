@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByLoginOrReadersTicketNumber(String login, Long readerTicketNumber);
 
+    Optional<User> findUserById(Long id);
+
 }

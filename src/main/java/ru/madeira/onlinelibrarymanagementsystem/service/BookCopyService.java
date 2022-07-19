@@ -1,7 +1,7 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.stereotype.Service;
-import ru.madeira.onlinelibrarymanagementsystem.exception.FreeBookCopiesNotFoundException;
+import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookCopyRepository;
 
 @Service
@@ -13,8 +13,13 @@ public class BookCopyService {
         this.bookCopyRepository = bookCopyRepository;
     }
 
-    public void lendBookCopy(Long bookId) {
-        Long bookCopyId = bookCopyRepository.getBookCopyIdByBookIdAndIsBusyIsFalse(bookId).orElseThrow(FreeBookCopiesNotFoundException::new);
+    public void lendBookCopy(Long bookCopyId) {
         bookCopyRepository.updateBookCopyStatus(bookCopyId);
+    }
+
+    public void releaseBookCopy(Long bookCopyId) {
+        BookCopy bookCopy = bookCopyRepository.getBookCopyById(bookCopyId).get();
+        bookCopy.setIsBusy(false);
+        bookCopyRepository.save(bookCopy);
     }
 }
