@@ -9,9 +9,9 @@ import ru.madeira.onlinelibrarymanagementsystem.exception.UserAlreadyExistsInSys
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
+import ru.madeira.onlinelibrarymanagementsystem.util.PasswordSecurityGenerator;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,12 +20,16 @@ public class UserService {
     private final UserMapper userMapper;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordSecurityGenerator passwordSecurityGenerator;
+    private final MailSenderService mailSenderService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService, PasswordEncoder passwordEncoder, PasswordSecurityGenerator passwordSecurityGenerator, MailSenderService mailSenderService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.passwordSecurityGenerator = passwordSecurityGenerator;
+        this.mailSenderService = mailSenderService;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -44,7 +48,11 @@ public class UserService {
         if(userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
             throw new UserAlreadyExistsInSystemException();
         }
-        return userMapper.toDto(userRepository.save(userMapper.toUser(user)));
+        User newUser = userMapper.toUser(user);
+        String password = passwordSecurityGenerator.generatePassayPassword();
+        newUser.setPassword(passwordEncoder.encode(password));
+        mailSenderService.sendRegistrationMail(newUser.getEmail(), password);
+        return userMapper.toDto(userRepository.save(newUser));
     }
 
     public UserDTO getUserById(Long id) {
