@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.repository.RoleRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

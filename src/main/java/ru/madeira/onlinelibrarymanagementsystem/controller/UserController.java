@@ -28,11 +28,6 @@ public class UserController {
         this.mailSenderService = mailSenderService;
     }
 
-    @GetMapping(value = "/users/{readersTicketNumber}")
-    public UserDTO findUserById(@PathVariable(value = "readersTicketNumber") Long readersTicketNumber) {
-        return userService.findUserByReadersTicketNumber(readersTicketNumber);
-    }
-
     @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
