@@ -25,7 +25,7 @@ public class Book {
     @Column(nullable = false)
     private Integer year;
 
-    @Column(nullable = false, length = 5000)
+    @Column(length = 5000)
     private String description;
 
     @ManyToMany
