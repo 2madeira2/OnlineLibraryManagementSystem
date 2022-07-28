@@ -59,5 +59,6 @@ public class BookService {
                 book.getTags().add(newTag);
             }
         }
+        bookRepository.save(book);
     }
 }
