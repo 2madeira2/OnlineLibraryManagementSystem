@@ -17,5 +17,7 @@
     <include file="45-changeset-role-table.xml" relativeToChangelogFile="true"/>
     <include file="50-changeset-users_and_roles-table.xml" relativeToChangelogFile="true"/>
     <include file="55-changeset-user_history-table.xml" relativeToChangelogFile="true"/>
+    <include file="60-changeset-insert-user-table.xml" relativeToChangelogFile="true"/>
+    <include file="65-changeset-insert-role-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

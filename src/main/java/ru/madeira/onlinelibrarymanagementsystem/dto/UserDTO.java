@@ -19,9 +19,9 @@ public class UserDTO {
     private String email;
     private String login;
     private Long readersTicketNumber;
-    private Set<UserHistory> userHistorySet;
+    private Set<UserHistoryDTO> userHistorySet;
 
-    public UserDTO(Long id, String surname, String name, String patronymic, LocalDate birthday, List<String> roles, String email, String login, Long readersTicketNumber, Set<UserHistory> userHistorySet) {
+    public UserDTO(Long id, String surname, String name, String patronymic, LocalDate birthday, List<String> roles, String email, String login, Long readersTicketNumber, Set<UserHistoryDTO> userHistorySet) {
         this.id = id;
         this.surname = surname;
         this.name = name;
