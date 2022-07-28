@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,6 +24,7 @@ public class Genre {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
+    @JsonBackReference
     private Set<Book> books;
 
     @Override

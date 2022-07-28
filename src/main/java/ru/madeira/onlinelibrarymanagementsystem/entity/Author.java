@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -34,6 +35,7 @@ public class Author {
     private LocalDate deathDate;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @JsonBackReference
     private Set<Book> books;
 
     @Override

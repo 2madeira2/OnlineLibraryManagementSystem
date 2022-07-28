@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,6 +24,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    @JsonBackReference
     private Set<Book> books;
 
     @Override
