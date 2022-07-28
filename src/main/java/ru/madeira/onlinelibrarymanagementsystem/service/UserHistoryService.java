@@ -18,6 +18,7 @@ import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserHistoryService {
@@ -26,6 +27,7 @@ public class UserHistoryService {
     private UserRepository userRepository;
     private BookCopyRepository bookCopyRepository;
     private UserHistoryMapper userHistoryMapper;
+    private static final Integer NUMBER_OF_WEEKS_FOR_BOOK_TO_BE_READ_BY_USER = 2;
 
     @Autowired
     public void setUserHistoryRepository(UserHistoryRepository userHistoryRepository, UserRepository userRepository, BookCopyRepository bookCopyRepository, UserHistoryMapper userHistoryMapper) {
@@ -62,8 +64,17 @@ public class UserHistoryService {
         userHistory.setHistoryBook(bookCopy);
         LocalDate receiptDate = LocalDate.now();
         userHistory.setReceiptDate(receiptDate);
-        userHistory.setReleaseDate(receiptDate.plusWeeks(2));
+        userHistory.setReleaseDate(receiptDate.plusWeeks(NUMBER_OF_WEEKS_FOR_BOOK_TO_BE_READ_BY_USER));
         userHistoryRepository.save(userHistory);
         return bookCopyId;
     }
+
+    public List<Long> findAllUsersIdWhoHaveDebts() {
+        return userHistoryRepository.findAllByReturnDateIsNull()
+                .stream()
+                .filter(u -> u.getReleaseDate().isBefore(LocalDate.now()))
+                .map(UserHistory::getId)
+                .collect(Collectors.toList());
+    }
+
 }

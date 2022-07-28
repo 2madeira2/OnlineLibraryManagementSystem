@@ -24,7 +24,6 @@ public class Genre {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
-    @JsonBackReference
     private Set<Book> books;
 
     @Override

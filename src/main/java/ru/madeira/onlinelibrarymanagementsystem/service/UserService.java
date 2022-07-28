@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
@@ -23,15 +24,15 @@ public class UserService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final PasswordSecurityGenerator passwordSecurityGenerator;
-//    private final MailSenderService mailSenderService;
+    private final MailSenderService mailSenderService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService, PasswordEncoder passwordEncoder, PasswordSecurityGenerator passwordSecurityGenerator/*, MailSenderService mailSenderService*/) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService, PasswordEncoder passwordEncoder, PasswordSecurityGenerator passwordSecurityGenerator, MailSenderService mailSenderService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.passwordSecurityGenerator = passwordSecurityGenerator;
-//        this.mailSenderService = mailSenderService;
+        this.mailSenderService = mailSenderService;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -58,11 +59,22 @@ public class UserService {
         newUser.setRoles(currentUserRoles);
         String password = passwordSecurityGenerator.generatePassayPassword();
         newUser.setPassword(passwordEncoder.encode(password));
-//        mailSenderService.sendRegistrationMail(newUser.getEmail(), password);
+        mailSenderService.sendRegistrationMail(newUser.getEmail(), password);
         return userMapper.toDto(userRepository.save(newUser));
     }
 
     public UserDTO getUserById(Long id) {
          return userMapper.toDto(userRepository.findUserById(id).orElseThrow(UserNotFoundException::new));
     }
+
+    public List<User> getAllUsersWhichIdInList(List<Long> idList) {
+        return userRepository.findAllByIdIn(idList);
+    }
+
+//    @Async
+//    public void remindUserAboutDebs() {
+//
+//    }
+
+
 }
