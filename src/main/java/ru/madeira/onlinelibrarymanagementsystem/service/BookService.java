@@ -3,9 +3,13 @@ package ru.madeira.onlinelibrarymanagementsystem.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
+import ru.madeira.onlinelibrarymanagementsystem.dto.TagDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
+import ru.madeira.onlinelibrarymanagementsystem.entity.Tag;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.BookMapper;
+import ru.madeira.onlinelibrarymanagementsystem.mapper.TagMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookRepository;
+import ru.madeira.onlinelibrarymanagementsystem.repository.TagRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +19,15 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final TagRepository tagRepository;
     private final BookMapper bookMapper;
+    private final TagMapper tagMapper;
 
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(BookRepository bookRepository, TagRepository tagRepository, BookMapper bookMapper, TagMapper tagMapper) {
         this.bookRepository = bookRepository;
+        this.tagRepository = tagRepository;
         this.bookMapper = bookMapper;
+        this.tagMapper = tagMapper;
     }
 
     public List<BookDTO> getAllBooks(Pageable pageable) {
@@ -39,4 +47,17 @@ public class BookService {
         return bookMapper.toDto(books);
     }
 
+    public void addTagsToBook(Long bookId, List<TagDTO> tags) {
+        Book book = bookRepository.findBookById(bookId);
+        for(TagDTO tag : tags) {
+            Tag currentTag = tagRepository.findByName(tag.getName());
+            if(currentTag != null) {
+                book.getTags().add(currentTag);
+            } else {
+                Tag newTag = tagMapper.toTag(tag);
+                tagRepository.save(newTag);
+                book.getTags().add(newTag);
+            }
+        }
+    }
 }

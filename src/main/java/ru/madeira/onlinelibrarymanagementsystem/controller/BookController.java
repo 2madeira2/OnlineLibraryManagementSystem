@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
+import ru.madeira.onlinelibrarymanagementsystem.dto.TagDTO;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
@@ -58,6 +59,11 @@ public class BookController {
     @DeleteMapping
     public void scrapBookCopyByBookCopyId(@RequestParam Long bookCopyId) {
         bookCopyService.scrapBookCopyByBookCopyId(bookCopyId);
+    }
+
+    @PostMapping("/{bookId}/addTags")
+    public void addTagsToBook(@PathVariable Long bookId, @RequestBody List<TagDTO> tags) {
+        bookService.addTagsToBook(bookId, tags);
     }
 
 
