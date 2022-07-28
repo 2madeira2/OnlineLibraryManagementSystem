@@ -1,6 +1,7 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.stereotype.Service;
+import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookCopyRepository;
 
@@ -14,7 +15,9 @@ public class BookCopyService {
     }
 
     public void lendBookCopy(Long bookCopyId) {
-        bookCopyRepository.updateBookCopyStatus(bookCopyId);
+        BookCopy bookCopy = bookCopyRepository.findById(bookCopyId).get();
+        bookCopy.setIsBusy(true);
+        bookCopyRepository.save(bookCopy);
     }
 
     public void releaseBookCopy(Long bookCopyId) {

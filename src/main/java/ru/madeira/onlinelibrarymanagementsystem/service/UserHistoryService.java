@@ -50,7 +50,7 @@ public class UserHistoryService {
     }
 
     public Long createNewUserHistoryRecord(Long bookId) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userRepository.findUserByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         if(userHistoryRepository.existsByUserIdAndReturnDateIsNull(currentUser.getId())) {
             throw new DebtsExistenceException();
@@ -62,7 +62,7 @@ public class UserHistoryService {
         userHistory.setHistoryBook(bookCopy);
         LocalDate receiptDate = LocalDate.now();
         userHistory.setReceiptDate(receiptDate);
-        userHistory.setReturnDate(receiptDate.plusWeeks(2));
+        userHistory.setReleaseDate(receiptDate.plusWeeks(2));
         userHistoryRepository.save(userHistory);
         return bookCopyId;
     }

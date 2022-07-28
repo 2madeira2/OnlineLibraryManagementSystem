@@ -58,7 +58,7 @@ public class UserController {
         return userService.createNewUser(user);
     }
 
-    @PostMapping("/users/{id}/arrears/{bookCopyId}/release")
+    @GetMapping("/users/{id}/arrears/{bookCopyId}/release")
     public void releaseUsersAppearsBook(@PathVariable Long id, @PathVariable Long bookCopyId) {
         userHistoryService.releaseUsersBook(id, bookCopyId);
         bookCopyService.releaseBookCopy(bookCopyId);

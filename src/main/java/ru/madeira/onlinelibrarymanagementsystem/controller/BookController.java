@@ -50,7 +50,7 @@ public class BookController {
         return bookService.findBooksByAuthor(authorName);
     }
 
-    @PostMapping("/{bookId}/lend")
+    @GetMapping("/{bookId}/lend")
     public void lendBook(@PathVariable Long bookId) {
         Long bookCopyId = userHistoryService.createNewUserHistoryRecord(bookId);
         bookCopyService.lendBookCopy(bookCopyId);
