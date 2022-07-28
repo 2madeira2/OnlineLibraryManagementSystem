@@ -1,0 +1,2 @@
+drop table books_and_genres
+GO

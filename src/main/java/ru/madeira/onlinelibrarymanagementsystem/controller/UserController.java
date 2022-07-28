@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
-import ru.madeira.onlinelibrarymanagementsystem.service.MailSenderService;
+//import ru.madeira.onlinelibrarymanagementsystem.service.MailSenderService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 
@@ -19,13 +19,13 @@ public class UserController {
 
     private final BookCopyService bookCopyService;
 
-    private final MailSenderService mailSenderService;
+//    private final MailSenderService mailSenderService;
 
-    public UserController(UserService userService, UserHistoryService userHistoryService, BookCopyService bookCopyService, MailSenderService mailSenderService) {
+    public UserController(UserService userService, UserHistoryService userHistoryService, BookCopyService bookCopyService/*, MailSenderService mailSenderService*/) {
         this.userService = userService;
         this.userHistoryService = userHistoryService;
         this.bookCopyService = bookCopyService;
-        this.mailSenderService = mailSenderService;
+//        this.mailSenderService = mailSenderService;
     }
 
     @GetMapping("/users")

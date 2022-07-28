@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="01-changeset-author-table.xml" relativeToChangelogFile="true"/>
+    <include file="05-changeset-book-table.xml" relativeToChangelogFile="true"/>
+    <include file="10-changeset-authors_and_books-table.xml" relativeToChangelogFile="true"/>
+    <include file="15-changeset-genre-table.xml" relativeToChangelogFile="true"/>
+    <include file="20-changeset-books_and_genres-table.xml" relativeToChangelogFile="true"/>
+    <include file="25-changeset-tag-table.xml" relativeToChangelogFile="true"/>
+    <include file="30-changeset-books_and_tags-table.xml" relativeToChangelogFile="true"/>
+    <include file="35-changeset-book_copy-table.xml" relativeToChangelogFile="true"/>
+    <include file="40-changeset-user-table.xml" relativeToChangelogFile="true"/>
+    <include file="45-changeset-role-table.xml" relativeToChangelogFile="true"/>
+    <include file="50-changeset-users_and_roles-table.xml" relativeToChangelogFile="true"/>
+    <include file="55-changeset-user_history-table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
