@@ -52,8 +52,7 @@ public class BookController {
 
     @GetMapping("/{bookId}/lend")
     public void lendBook(@PathVariable Long bookId) {
-        Long bookCopyId = userHistoryService.createNewUserHistoryRecord(bookId);
-        bookCopyService.lendBookCopy(bookCopyId);
+        bookCopyService.lendBookCopy(bookId);
     }
 
     @DeleteMapping

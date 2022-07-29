@@ -20,6 +20,10 @@ public class RoleService {
         return roleRepository.findRoleByName(name).orElseThrow();
     }
 
+    public void createNewRole(Role role) {
+        roleRepository.save(role);
+    }
+
     public List<Role> findRoles(List<String> list) {
         return list.stream()
                 .map(this::findRoleByName)

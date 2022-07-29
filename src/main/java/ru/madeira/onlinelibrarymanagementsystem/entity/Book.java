@@ -2,6 +2,9 @@ package ru.madeira.onlinelibrarymanagementsystem.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -29,6 +32,11 @@ public class Book {
     private String description;
 
     @ManyToMany
+    @Cascade({
+            CascadeType.SAVE_UPDATE,
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    })
     @JoinTable(
             name = "authors_and_books",
             joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),

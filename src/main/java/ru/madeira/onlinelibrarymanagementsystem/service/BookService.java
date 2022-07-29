@@ -11,6 +11,7 @@ import ru.madeira.onlinelibrarymanagementsystem.mapper.TagMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookRepository;
 import ru.madeira.onlinelibrarymanagementsystem.repository.TagRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class BookService {
         return bookMapper.toDto(bookRepository.save(bookMapper.toBook(book)));
     }
 
+    @Transactional
     public List<BookDTO> findBooksByAuthor(String authorName) {
         List<Book> books = new ArrayList<>(bookRepository.findBooksByAuthorsNameContains(authorName));
         books.addAll(bookRepository.findBooksByAuthorsSurnameContains(authorName));
@@ -47,6 +49,7 @@ public class BookService {
         return bookMapper.toDto(books);
     }
 
+    @Transactional
     public void addTagsToBook(Long bookId, List<TagDTO> tags) {
         Book book = bookRepository.findBookById(bookId);
         for(TagDTO tag : tags) {

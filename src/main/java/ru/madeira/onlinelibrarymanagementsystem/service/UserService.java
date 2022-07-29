@@ -86,4 +86,15 @@ public class UserService {
         return userMapper.toDto(userRepository.save(userForEdit));
     }
 
+    public void addRoleToUser(Long id, String role) {
+        User currentUser = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
+        Role newRole = roleService.findRoleByName(role);
+        if(newRole == null) {
+            newRole = new Role();
+            newRole.setName(role);
+            roleService.createNewRole(newRole);
+        }
+        currentUser.getRoles().add(newRole);
+        userRepository.save(currentUser);
+    }
 }

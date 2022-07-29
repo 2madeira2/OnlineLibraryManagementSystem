@@ -85,4 +85,9 @@ public class UserController {
         return userService.editMyAccountData(principal.getName(), login, email, password);
     }
 
+    @PostMapping("/users/{id}/addRights")
+    public void addRightsToUser(@PathVariable Long id, @RequestParam String role) {
+        userService.addRoleToUser(id, role);
+    }
+
 }
