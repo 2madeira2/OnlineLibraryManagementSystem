@@ -44,4 +44,11 @@ public class GlobalExceptionHandler {
         return "Book booking error. You have debts!";
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({NonOriginalDataForSystemException.class})
+    public String nonOriginalDataForSystemExceptionHandler() {
+        return "Non original data for your account!";
+    }
+
 }

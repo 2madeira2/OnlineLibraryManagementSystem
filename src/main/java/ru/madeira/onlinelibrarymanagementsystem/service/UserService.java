@@ -1,11 +1,11 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.entity.User;
+import ru.madeira.onlinelibrarymanagementsystem.exception.NonOriginalDataForSystemException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserAlreadyExistsInSystemException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.UserNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
@@ -71,10 +71,19 @@ public class UserService {
         return userRepository.findAllByIdIn(idList);
     }
 
-//    @Async
-//    public void remindUserAboutDebs() {
-//
-//    }
+    public User getUserByLogin(String login) {
+        return userRepository.findUserByLogin(login).orElseThrow(UserNotFoundException::new);
+    }
 
+    public UserDTO editMyAccountData(String oldLogin, String newLogin, String email, String password) {
+        User userForEdit = userRepository.findUserByLogin(oldLogin).orElseThrow(UserNotFoundException::new);
+        if(userRepository.existsByLoginOrEmail(newLogin, email)) {
+            throw new NonOriginalDataForSystemException();
+        }
+        userForEdit.setEmail(email);
+        userForEdit.setLogin(newLogin);
+        userForEdit.setPassword(passwordEncoder.encode(password));
+        return userMapper.toDto(userRepository.save(userForEdit));
+    }
 
 }

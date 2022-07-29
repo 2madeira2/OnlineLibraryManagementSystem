@@ -3,12 +3,14 @@ package ru.madeira.onlinelibrarymanagementsystem.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
+import ru.madeira.onlinelibrarymanagementsystem.entity.User;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 //import ru.madeira.onlinelibrarymanagementsystem.service.MailSenderService;
 import ru.madeira.onlinelibrarymanagementsystem.service.MailSenderService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -68,6 +70,19 @@ public class UserController {
     @PostMapping("/users/sendMailToUser")
     public void sendMail(@RequestParam String to) {
         mailSenderService.sendRegistrationMail(to, "password");
+    }
+
+    @GetMapping("/myAccount")
+    public User getMyAccountInformation(Principal principal) {
+        return userService.getUserByLogin(principal.getName());
+    }
+
+    @PutMapping("/myAccount/editData")
+    public UserDTO editMyAccountData(@RequestParam String login,
+                                     @RequestParam String email,
+                                     @RequestParam String password,
+                                     Principal principal) {
+        return userService.editMyAccountData(principal.getName(), login, email, password);
     }
 
 }
