@@ -104,5 +104,6 @@ public class UserService {
                 }
             }
         }
+        userRepository.save(currentUser);
     }
 }
