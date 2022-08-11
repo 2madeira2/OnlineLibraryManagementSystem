@@ -3,8 +3,8 @@ package ru.madeira.onlinelibrarymanagementsystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
-import ru.madeira.onlinelibrarymanagementsystem.dto.TagDTO;
+import ru.madeira.onlinelibrarymanagementsystem.dto.*;
+import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
@@ -33,7 +33,7 @@ public class BookController {
     public void setUserHistoryService(UserHistoryService userHistoryService) {
         this.userHistoryService = userHistoryService;
     }
-
+//добавить сортировку и фильтрацию по жанру, по автору, по названию, по году написания и тд
     @GetMapping()
     public List<BookDTO> getAllBooks(@RequestParam(value = "size", required = false, defaultValue = "2") Integer size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
@@ -42,7 +42,7 @@ public class BookController {
 
     @PostMapping
     public BookDTO createBook(@RequestBody BookDTO book) {
-        return bookService.createBook(book);
+        return bookService.advancedCreateBook(book);
     }
 
     @GetMapping("/{authorName}")
@@ -55,6 +55,8 @@ public class BookController {
         bookCopyService.lendBookCopy(bookId);
     }
 
+    // переделать списание экземпляра книги
+
     @DeleteMapping
     public void scrapBookCopyByBookCopyId(@RequestParam Long bookCopyId) {
         bookCopyService.scrapBookCopyByBookCopyId(bookCopyId);
@@ -65,5 +67,23 @@ public class BookController {
         bookService.addTagsToBook(bookId, tags);
     }
 
+    @GetMapping("/{bookId}/getAllCopies")
+    public List<BookCopyDTO> getAllCopiesByBookId(@PathVariable Long bookId) {
+        return bookService.getAllCopiesByBookId(bookId);
+    }
 
+    @GetMapping("/{bookCopyId}/takingHistory")
+    public List<UserHistoryDTO> getUsersWhoTookBook(@PathVariable Long bookCopyId) {
+        return userHistoryService.getUsersWhoTookBookCopy(bookCopyId);
+    }
+
+    @PutMapping("/{bookId}/editBookInfo")
+    public void editBookInfo(@PathVariable Long bookId, @RequestBody BookDTO bookDTO) {
+        bookService.editBookInfo(bookId, bookDTO);
+    }
+
+    @PostMapping("/{bookId}/addBookCopies")
+    public void addBookCopiesForBook(@PathVariable Long bookId, @RequestBody List<BookCopyDTO> bookCopies) {
+        bookCopyService.addBookCopiesForBook(bookId, bookCopies);
+    }
 }

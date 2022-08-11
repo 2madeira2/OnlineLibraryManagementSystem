@@ -67,10 +67,10 @@ public class UserController {
         bookCopyService.releaseBookCopy(bookCopyId);
     }
 
-    @PostMapping("/users/sendMailToUser")
-    public void sendMail(@RequestParam String to) {
-        mailSenderService.sendRegistrationMail(to, "password");
-    }
+//    @PostMapping("/users/sendMailToUser")
+//    public void sendMail(@RequestParam String to) {
+//        mailSenderService.sendRegistrationMail(to, "password");
+//    }
 
     @GetMapping("/myAccount")
     public User getMyAccountInformation(Principal principal) {
@@ -88,6 +88,11 @@ public class UserController {
     @PostMapping("/users/{id}/addRights")
     public void addRightsToUser(@PathVariable Long id, @RequestParam String role) {
         userService.addRoleToUser(id, role);
+    }
+
+    @DeleteMapping("/users/{id}/takeAwayRights")
+    public void takeAwayUsersRights(@PathVariable Long id, @RequestParam List<String> roles) {
+        userService.takeAwayUsersRights(id, roles);
     }
 
 }

@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
+import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 
 import java.util.List;
 

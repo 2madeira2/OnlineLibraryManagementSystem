@@ -11,4 +11,5 @@ public interface UserHistoryRepository extends JpaRepository<UserHistory, Long> 
     UserHistory findUserHistoryByUserIdAndHistoryBookId(Long userId, Long bookCopyId);
     Boolean existsByUserIdAndReturnDateIsNull(Long userId);
     List<UserHistory> findAllByReturnDateIsNull();
+
 }

@@ -25,4 +25,9 @@ public class GenreController {
     public GenreDTO createNewGenre(@RequestBody GenreDTO genre) {
         return genreService.createNewGenre(genre);
     }
+
+    @PutMapping("/{genreId}/edit")
+    public void editGenreInfo(@RequestBody GenreDTO genreDTO, @PathVariable Long genreId) {
+        genreService.editGenreInfo(genreId, genreDTO);
+    }
 }

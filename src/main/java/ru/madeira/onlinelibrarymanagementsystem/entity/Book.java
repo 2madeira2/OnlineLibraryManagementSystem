@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
@@ -32,11 +33,12 @@ public class Book {
     private String description;
 
     @ManyToMany
-    @Cascade({
-            CascadeType.SAVE_UPDATE,
-            CascadeType.MERGE,
-            CascadeType.PERSIST
-    })
+//    @Cascade({
+//            CascadeType.SAVE_UPDATE,
+//            CascadeType.MERGE,
+//            CascadeType.PERSIST
+//    })
+    @JsonBackReference(value = "authors")
     @JoinTable(
             name = "authors_and_books",
             joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),
@@ -45,6 +47,7 @@ public class Book {
     private Set<Author> authors;
 
     @ManyToMany
+    @JsonBackReference(value = "genres")
     @JoinTable(
             name = "books_and_genres",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
@@ -53,6 +56,7 @@ public class Book {
     private Set<Genre> genres;
 
     @ManyToMany
+    @JsonBackReference(value = "tags")
     @JoinTable(
             name = "books_and_tags",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
@@ -62,6 +66,7 @@ public class Book {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     @ToString.Exclude
+    @JsonBackReference(value = "copies")
     private Set<BookCopy> bookCopies;
 
     @Override

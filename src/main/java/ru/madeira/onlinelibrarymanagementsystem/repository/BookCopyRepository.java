@@ -4,8 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
+import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
+import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +24,6 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
     void updateBookCopyStatus(Long bookCopyId);
 
     Optional<BookCopy> getBookCopyById(Long id);
+
+    List<BookCopyDTO> findAllByBookId(Long bookId);
 }

@@ -51,4 +51,11 @@ public class GlobalExceptionHandler {
         return "Non original data for your account!";
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({GenreNotFoundException.class})
+    public String genreNotFoundExceptionHandler() {
+        return "Not found genre!";
+    }
+
 }

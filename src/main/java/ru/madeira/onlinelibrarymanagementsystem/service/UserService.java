@@ -12,9 +12,9 @@ import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 import ru.madeira.onlinelibrarymanagementsystem.util.PasswordSecurityGenerator;
 
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.ListIterator;
 
 @Service
 public class UserService {
@@ -52,11 +52,6 @@ public class UserService {
             throw new UserAlreadyExistsInSystemException();
         }
         User newUser = userMapper.toUser(user);
-        Set<Role> currentUserRoles = new HashSet<>();
-        for(String role : user.getRoles()) {
-            currentUserRoles.add(roleService.findRoleByName(role));
-        }
-        newUser.setRoles(currentUserRoles);
         String password = passwordSecurityGenerator.generatePassayPassword();
         newUser.setPassword(passwordEncoder.encode(password));
         mailSenderService.sendRegistrationMail(newUser.getEmail(), password);
@@ -96,5 +91,18 @@ public class UserService {
         }
         currentUser.getRoles().add(newRole);
         userRepository.save(currentUser);
+    }
+
+    public void takeAwayUsersRights(Long id, List<String> roles) {
+        User currentUser = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
+        Iterator<Role> roleIterator = currentUser.getRoles().iterator();
+        while(roleIterator.hasNext()) {
+            Role currentRole = roleIterator.next();
+            for(String role : roles) {
+                if(currentRole.getName().equals(role)){
+                    roleIterator.remove();
+                }
+            }
+        }
     }
 }

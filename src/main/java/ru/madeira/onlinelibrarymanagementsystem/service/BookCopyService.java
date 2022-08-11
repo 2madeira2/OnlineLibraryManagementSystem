@@ -1,20 +1,28 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.stereotype.Service;
+import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
+import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
+import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
+import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookCopyRepository;
+import ru.madeira.onlinelibrarymanagementsystem.repository.BookRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class BookCopyService {
 
     private final BookCopyRepository bookCopyRepository;
     private final UserHistoryService userHistoryService;
+    private final BookRepository bookRepository;
 
-    public BookCopyService(BookCopyRepository bookCopyRepository, UserHistoryService userHistoryService) {
+    public BookCopyService(BookCopyRepository bookCopyRepository, UserHistoryService userHistoryService, BookRepository bookRepository) {
         this.bookCopyRepository = bookCopyRepository;
         this.userHistoryService = userHistoryService;
+        this.bookRepository = bookRepository;
     }
 
     @Transactional
@@ -34,5 +42,16 @@ public class BookCopyService {
 
     public void scrapBookCopyByBookCopyId(Long bookCopyId) {
         bookCopyRepository.deleteById(bookCopyId);
+    }
+
+
+    public void addBookCopiesForBook(Long bookId, List<BookCopyDTO> bookCopies) {
+        Book book = bookRepository.findBookById(bookId);
+        for(BookCopyDTO bookCopyDTO : bookCopies) {
+            BookCopy bookCopy = new BookCopy();
+            bookCopy.setIsBusy(bookCopyDTO.getIsBusy());
+            bookCopy.setBook(book);
+            bookCopyRepository.save(bookCopy);
+        }
     }
 }

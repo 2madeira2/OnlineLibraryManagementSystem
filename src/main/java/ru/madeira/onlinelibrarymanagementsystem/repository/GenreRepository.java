@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Boolean existsGenreByName(String genreName);
+    Genre findByName(String name);
+    Boolean existsGenreById(Long id);
 }

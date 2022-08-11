@@ -54,7 +54,7 @@ public class UserHistoryService {
     public Long createNewUserHistoryRecord(Long bookId) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userRepository.findUserByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        if(userHistoryRepository.existsByUserIdAndReturnDateIsNull(currentUser.getId())) {
+        if (userHistoryRepository.existsByUserIdAndReturnDateIsNull(currentUser.getId())) {
             throw new DebtsExistenceException();
         }
         BookCopy bookCopy = bookCopyRepository.findBookCopyByBookIdAndIsBusyFalse(bookId).orElseThrow(FreeBookCopiesNotFoundException::new);
@@ -77,4 +77,7 @@ public class UserHistoryService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserHistoryDTO> getUsersWhoTookBookCopy(Long bookCopyId) {
+        return userHistoryMapper.toDto(userHistoryRepository.findAllByUserId(bookCopyId));
+    }
 }

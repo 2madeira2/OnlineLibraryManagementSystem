@@ -1,6 +1,8 @@
 package ru.madeira.onlinelibrarymanagementsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
 
 import java.time.LocalDate;
@@ -15,14 +17,12 @@ public class UserDTO {
     private String name;
     private String patronymic;
     private LocalDate birthday;
-    private List<String> roles;
+    private Set<RoleDTO> roles;
     private String email;
     private String login;
     private Long readersTicketNumber;
-    private Set<UserHistoryDTO> userHistorySet;
 
-    public UserDTO(Long id, String surname, String name, String patronymic, LocalDate birthday, List<String> roles, String email, String login, Long readersTicketNumber, Set<UserHistoryDTO> userHistorySet) {
-        this.id = id;
+    public UserDTO(String surname, String name, String patronymic, LocalDate birthday, Set<RoleDTO> roles, String email, String login, Long readersTicketNumber) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -31,6 +31,5 @@ public class UserDTO {
         this.email = email;
         this.login = login;
         this.readersTicketNumber = readersTicketNumber;
-        this.userHistorySet = userHistorySet;
     }
 }
