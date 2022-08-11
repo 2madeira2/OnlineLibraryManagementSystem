@@ -6,6 +6,7 @@ import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.TagDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.*;
+import ru.madeira.onlinelibrarymanagementsystem.mapper.BookCopyMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.BookMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.TagMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.*;
@@ -28,8 +29,9 @@ public class BookService {
     private final BookCopyRepository bookCopyRepository;
     private final BookMapper bookMapper;
     private final TagMapper tagMapper;
+    private final BookCopyMapper bookCopyMapper;
 
-    public BookService(BookRepository bookRepository, TagRepository tagRepository, GenreRepository genreRepository, AuthorRepository authorRepository, UserHistoryRepository userHistoryRepository, BookCopyRepository bookCopyRepository, BookMapper bookMapper, TagMapper tagMapper) {
+    public BookService(BookRepository bookRepository, TagRepository tagRepository, GenreRepository genreRepository, AuthorRepository authorRepository, UserHistoryRepository userHistoryRepository, BookCopyRepository bookCopyRepository, BookMapper bookMapper, TagMapper tagMapper, BookCopyMapper bookCopyMapper) {
         this.bookRepository = bookRepository;
         this.tagRepository = tagRepository;
         this.genreRepository = genreRepository;
@@ -38,6 +40,7 @@ public class BookService {
         this.bookCopyRepository = bookCopyRepository;
         this.bookMapper = bookMapper;
         this.tagMapper = tagMapper;
+        this.bookCopyMapper = bookCopyMapper;
     }
 
     public List<BookDTO> getAllBooks(Pageable pageable) {
@@ -108,7 +111,7 @@ public class BookService {
     }
 
     public List<BookCopyDTO> getAllCopiesByBookId(Long bookId) {
-        return bookCopyRepository.findAllByBookId(bookId);
+        return bookCopyMapper.toDTO(bookCopyRepository.findAllByBookId(bookId));
     }
 
     public void editBookInfo(Long bookId, BookDTO bookDTO) {

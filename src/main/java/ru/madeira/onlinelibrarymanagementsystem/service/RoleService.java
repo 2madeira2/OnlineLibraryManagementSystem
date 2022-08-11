@@ -2,6 +2,7 @@ package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
+import ru.madeira.onlinelibrarymanagementsystem.exception.RoleNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.repository.RoleRepository;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class RoleService {
     }
 
     public Role findRoleByName(String name) {
-        return roleRepository.findRoleByName(name).orElseThrow();
+        return roleRepository.findRoleByName(name).orElseThrow(RoleNotFoundException::new);
     }
 
     public void createNewRole(Role role) {

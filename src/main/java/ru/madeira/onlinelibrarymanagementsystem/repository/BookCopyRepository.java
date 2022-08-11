@@ -25,5 +25,5 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
 
     Optional<BookCopy> getBookCopyById(Long id);
 
-    List<BookCopyDTO> findAllByBookId(Long bookId);
+    List<BookCopy> findAllByBookId(Long bookId);
 }

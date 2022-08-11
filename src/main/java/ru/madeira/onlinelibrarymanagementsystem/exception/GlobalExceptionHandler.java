@@ -58,4 +58,11 @@ public class GlobalExceptionHandler {
         return "Not found genre!";
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({RoleNotFoundException.class})
+    public String roleNotFoundExceptionHandler() {
+        return "Role not found!";
+    }
+
 }
