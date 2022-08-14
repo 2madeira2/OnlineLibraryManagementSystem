@@ -1,11 +1,15 @@
 package ru.madeira.onlinelibrarymanagementsystem.aop;
 
+import liquibase.pro.packaged.B;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import ru.madeira.onlinelibrarymanagementsystem.entity.BookActionsLog;
+import ru.madeira.onlinelibrarymanagementsystem.service.BookActionsLogService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +17,13 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class AppLoggingAspect {
+
+    private BookActionsLogService bookActionsLogService;
+
+    @Autowired
+    public void setBookActionsLogService(BookActionsLogService bookActionsLogService) {
+        this.bookActionsLogService = bookActionsLogService;
+    }
 
     @Pointcut("within(ru.madeira.onlinelibrarymanagementsystem.service..*)")
     public void serviceMethods() {
@@ -49,6 +60,10 @@ public class AppLoggingAspect {
 
     @Before("controllerMethods()")
     public void controllerMethodsParameters(JoinPoint joinPoint) {
+        BookActionsLog bookActionsLog = new BookActionsLog();
+        bookActionsLog.setUser(SecurityContextHolder.getContext().getAuthentication().getName());
+        bookActionsLog.setMethodName(joinPoint.getSignature().getName());
+        bookActionsLogService.saveLog(bookActionsLog);
         log.info("User: + " + SecurityContextHolder.getContext().getAuthentication() + " calling a controller method: " + joinPoint.getSignature().getName());
     }
 }

@@ -26,6 +26,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  data:
+    mongodb:
+      database: library_db
 springdoc:
   swagger-ui:
     path: api
