@@ -15,6 +15,15 @@ public class BookActionsLog {
 
     private String methodName;
 
+    private Object[] methodArgs;
+
+    public Object[] getMethodArgs() {
+        return methodArgs;
+    }
+
+    public void setMethodArgs(Object[] methodArgs) {
+        this.methodArgs = methodArgs;
+    }
 
     public ObjectId getId() {
         return id;

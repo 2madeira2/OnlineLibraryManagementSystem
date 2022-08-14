@@ -61,6 +61,7 @@ public class AppLoggingAspect {
     @Before("controllerMethods()")
     public void controllerMethodsParameters(JoinPoint joinPoint) {
         BookActionsLog bookActionsLog = new BookActionsLog();
+        bookActionsLog.setMethodArgs(joinPoint.getArgs());
         bookActionsLog.setUser(SecurityContextHolder.getContext().getAuthentication().getName());
         bookActionsLog.setMethodName(joinPoint.getSignature().getName());
         bookActionsLogService.saveLog(bookActionsLog);

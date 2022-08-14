@@ -150,4 +150,10 @@ public class BookService {
         book.setAuthors(newAuthors);
         bookRepository.save(book);
     }
+
+    public void addBooks(List<Book> books) {
+        for(Book book : books) {
+            advancedCreateBook(bookMapper.toDto(book));
+        }
+    }
 }

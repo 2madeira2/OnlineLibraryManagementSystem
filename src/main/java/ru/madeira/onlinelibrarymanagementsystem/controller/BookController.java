@@ -2,6 +2,7 @@ package ru.madeira.onlinelibrarymanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.dto.*;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
@@ -34,7 +35,7 @@ public class BookController {
         this.userHistoryService = userHistoryService;
     }
 //добавить сортировку и фильтрацию по жанру, по автору, по названию, по году написания и тд
-    @GetMapping()
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDTO> getAllBooks(@RequestParam(value = "size", required = false, defaultValue = "2") Integer size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
         return bookService.getAllBooks(PageRequest.of(page, size));
