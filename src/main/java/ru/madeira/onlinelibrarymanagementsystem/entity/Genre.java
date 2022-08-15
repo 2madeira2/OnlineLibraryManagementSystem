@@ -1,6 +1,7 @@
 package ru.madeira.onlinelibrarymanagementsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -24,6 +25,7 @@ public class Genre {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
+    @JsonIgnore
     private Set<Book> books;
 
     @Override

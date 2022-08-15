@@ -35,6 +35,7 @@ public class Author {
     private LocalDate deathDate;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @JsonBackReference
     private Set<Book> books;
 
     @Override

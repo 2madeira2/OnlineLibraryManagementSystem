@@ -1,6 +1,7 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
@@ -43,8 +44,8 @@ public class BookService {
         this.bookCopyMapper = bookCopyMapper;
     }
 
-    public List<BookDTO> getAllBooks(Pageable pageable) {
-        return bookRepository.findAll(pageable)
+    public List<BookDTO> getAllBooks(Specification<Book> bookSpecification, Pageable pageable) {
+        return bookRepository.findAll(bookSpecification, pageable)
                 .stream().map(bookMapper::toDto)
                 .collect(Collectors.toList());
     }

@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.madeira.onlinelibrarymanagementsystem.criteria.BookSearchCriteria;
 import ru.madeira.onlinelibrarymanagementsystem.dto.*;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
+import ru.madeira.onlinelibrarymanagementsystem.specification.BookSpecification;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,9 +39,13 @@ public class BookController {
     }
 //добавить сортировку и фильтрацию по жанру, по автору, по названию, по году написания и тд
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDTO> getAllBooks(@RequestParam(value = "size", required = false, defaultValue = "2") Integer size,
+    public List<BookDTO> getAllBooks(@RequestParam(required = false) String word,
+                                     @RequestParam(required = false) String genre,
+                                     @RequestParam(required = false) Long minYear,
+                                     @RequestParam(required = false) Long maxYear,
+                                     @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
-        return bookService.getAllBooks(PageRequest.of(page, size));
+        return bookService.getAllBooks(BookSpecification.getBookSpecification(new BookSearchCriteria(word, genre, minYear, maxYear)), PageRequest.of(page, size));
     }
 
     @PostMapping

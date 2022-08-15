@@ -1,5 +1,6 @@
 package ru.madeira.onlinelibrarymanagementsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Author;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
@@ -16,5 +17,6 @@ public class BookDTO {
     private Set<Author> authors;
     private Set<Genre> genres;
     private Set<Tag> tags;
+    @JsonIgnore
     private Set<BookCopy> bookCopies;
 }

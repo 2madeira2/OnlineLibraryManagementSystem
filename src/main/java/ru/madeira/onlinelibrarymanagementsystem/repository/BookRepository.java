@@ -2,7 +2,9 @@ package ru.madeira.onlinelibrarymanagementsystem.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
@@ -11,9 +13,9 @@ import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import java.util.List;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     List<Book> findBookByTitle(String title);
-    Page<Book> findAll(Pageable pageable);
+    Page<Book> findAll(Specification<Book> bookSpecification, Pageable pageable);
     Book findBookById(Long id);
     List<Book> findBooksByAuthorsSurnameContains(String authorsName);
     List<Book> findBooksByAuthorsNameContains(String authorsName);
