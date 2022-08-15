@@ -39,7 +39,7 @@ public class BookSpecification {
             query.distinct(true);
             Root<Author> author = query.from(Author.class);
             Expression<Collection<Book>> authorsBooks = author.get("books");
-            return criteriaBuilder.and(criteriaBuilder.like(author.get("surname"), word), criteriaBuilder.isMember(root, authorsBooks));
+            return criteriaBuilder.and(criteriaBuilder.like(author.get("surname"), "%" + word + "%"), criteriaBuilder.isMember(root, authorsBooks));
         };
     }
 
