@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class BookSpecification {
 
-    public static Specification<Book> getBookSpecification(BookSearchCriteria bookSearchCriteria) {
+        public static Specification<Book> getBookSpecification(BookSearchCriteria bookSearchCriteria) {
         Specification<Book> filter = Specification.where(null);
         if(bookSearchCriteria.getWord() != null) {
             filter = filter.and(titleOrAuthorContainsWord(bookSearchCriteria.getWord()).or(authorSurnameContainsWord(bookSearchCriteria.getWord())));

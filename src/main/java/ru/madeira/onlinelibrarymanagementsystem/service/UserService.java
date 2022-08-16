@@ -2,6 +2,7 @@ package ru.madeira.onlinelibrarymanagementsystem.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.madeira.onlinelibrarymanagementsystem.dto.RoleDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.UserDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Role;
 import ru.madeira.onlinelibrarymanagementsystem.entity.User;
@@ -12,9 +13,7 @@ import ru.madeira.onlinelibrarymanagementsystem.mapper.UserMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.UserRepository;
 import ru.madeira.onlinelibrarymanagementsystem.util.PasswordSecurityGenerator;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -52,6 +51,11 @@ public class UserService {
             throw new UserAlreadyExistsInSystemException();
         }
         User newUser = userMapper.toUser(user);
+        Set<Role> currentUserRoles = new HashSet<>();
+        for(RoleDTO roleDTO : user.getRoles()) {
+            currentUserRoles.add(roleService.findRoleByName(roleDTO.getName()));
+        }
+        newUser.setRoles(currentUserRoles);
         String password = passwordSecurityGenerator.generatePassayPassword();
         newUser.setPassword(passwordEncoder.encode(password));
         mailSenderService.sendRegistrationMail(newUser.getEmail(), password);

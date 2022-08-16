@@ -28,5 +28,6 @@ public class ConsumerService {
         xmlMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         List<Book> books = xmlMapper.readValue(message, new TypeReference<>() {});
         bookService.addBooks(books);
+        //jaxb, jaxws, wsdl, xslt, dom, два подхода, sax simple api for xml, xpath
     }
 }
