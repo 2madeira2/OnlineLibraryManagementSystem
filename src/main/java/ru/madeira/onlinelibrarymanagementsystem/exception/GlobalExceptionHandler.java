@@ -65,4 +65,11 @@ public class GlobalExceptionHandler {
         return "Role not found!";
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({BookNotFoundException.class})
+    public String bookNotFoundExceptionHandler() {
+        return "Book not found!";
+    }
+
 }

@@ -11,12 +11,13 @@ import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     List<Book> findBookByTitle(String title);
     Page<Book> findAll(Specification<Book> bookSpecification, Pageable pageable);
-    Book findBookById(Long id);
+    Optional<Book> findBookById(Long id);
     List<Book> findBooksByAuthorsSurnameContains(String authorsName);
     List<Book> findBooksByAuthorsNameContains(String authorsName);
     List<Book> findBooksByAuthorsPatronymicContains(String patronymic);

@@ -53,9 +53,9 @@ public class BookController {
         return bookService.advancedCreateBook(book);
     }
 
-    @GetMapping("/{authorName}")
-    public List<BookDTO> getBooksByAuthor(@PathVariable String authorName) {
-        return bookService.findBooksByAuthor(authorName);
+    @GetMapping(path = "/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BookDTO getBookById(@PathVariable Long bookId) {
+        return bookService.getBookById(bookId);
     }
 
     @GetMapping("/{bookId}/lend")

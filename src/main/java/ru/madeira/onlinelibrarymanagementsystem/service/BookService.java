@@ -7,6 +7,7 @@ import ru.madeira.onlinelibrarymanagementsystem.dto.BookCopyDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.BookDTO;
 import ru.madeira.onlinelibrarymanagementsystem.dto.TagDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.*;
+import ru.madeira.onlinelibrarymanagementsystem.exception.BookNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.BookCopyMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.BookMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.TagMapper;
@@ -58,10 +59,10 @@ public class BookService {
         Book newBook = bookMapper.toBook(bookDTO);
         Set<Genre> genreSet;
         Set<Genre> newGenres = new HashSet<>();
-        if((genreSet = newBook.getGenres()) != null) {
-            for(Genre genre : genreSet) {
+        if ((genreSet = newBook.getGenres()) != null) {
+            for (Genre genre : genreSet) {
                 Genre genreFromDB = genreRepository.findByName(genre.getName());
-                if(genreFromDB != null) {
+                if (genreFromDB != null) {
                     newGenres.add(genreFromDB);
                 } else {
                     genreRepository.save(genre);
@@ -72,10 +73,10 @@ public class BookService {
         newBook.setGenres(newGenres);
         Set<Author> authorSet;
         Set<Author> newAuthors = new HashSet<>();
-        if((authorSet = newBook.getAuthors()) != null) {
-            for(Author author : authorSet) {
+        if ((authorSet = newBook.getAuthors()) != null) {
+            for (Author author : authorSet) {
                 Author authorFromDB = authorRepository.findBySurnameAndNameAndPatronymicAndBirthDate(author.getSurname(), author.getName(), author.getPatronymic(), author.getBirthDate());
-                if(authorFromDB != null) {
+                if (authorFromDB != null) {
                     newAuthors.add(authorFromDB);
                 } else {
                     authorRepository.save(author);
@@ -97,10 +98,10 @@ public class BookService {
 
     @Transactional
     public void addTagsToBook(Long bookId, List<TagDTO> tags) {
-        Book book = bookRepository.findBookById(bookId);
-        for(TagDTO tag : tags) {
+        Book book = bookRepository.findBookById(bookId).orElseThrow(BookNotFoundException::new);
+        for (TagDTO tag : tags) {
             Tag currentTag = tagRepository.findByName(tag.getName());
-            if(currentTag != null) {
+            if (currentTag != null) {
                 book.getTags().add(currentTag);
             } else {
                 Tag newTag = tagMapper.toTag(tag);
@@ -116,45 +117,50 @@ public class BookService {
     }
 
     public void editBookInfo(Long bookId, BookDTO bookDTO) {
-        Book book = bookRepository.findBookById(bookId);
-        Book newBook = bookMapper.toBook(bookDTO);
-        book.setTitle(bookDTO.getTitle());
-        book.setDescription(bookDTO.getDescription());
-        book.setYear(bookDTO.getYear());
-        Set<Genre> genreSet;
-        Set<Genre> newGenres = new HashSet<>();
-        if((genreSet = newBook.getGenres()) != null) {
-            for(Genre genre : genreSet) {
-                Genre genreFromDB = genreRepository.findByName(genre.getName());
-                if(genreFromDB != null) {
-                    newGenres.add(genreFromDB);
-                } else {
-                    genreRepository.save(genre);
-                    newGenres.add(genre);
+        if (bookRepository.existsById(bookId)) {
+            Book editBook = bookMapper.toBook(bookDTO);
+            editBook.setId(bookId);
+            Set<Genre> genreSet;
+            Set<Genre> newGenres = new HashSet<>();
+            if ((genreSet = editBook.getGenres()) != null) {
+                for (Genre genre : genreSet) {
+                    Genre genreFromDB = genreRepository.findByName(genre.getName());
+                    if (genreFromDB != null) {
+                        newGenres.add(genreFromDB);
+                    } else {
+                        genreRepository.save(genre);
+                        newGenres.add(genre);
+                    }
                 }
             }
-        }
-        book.setGenres(newGenres);
-        Set<Author> authorSet;
-        Set<Author> newAuthors = new HashSet<>();
-        if((authorSet = newBook.getAuthors()) != null) {
-            for(Author author : authorSet) {
-                Author authorFromDB = authorRepository.findBySurnameAndNameAndPatronymicAndBirthDate(author.getSurname(), author.getName(), author.getPatronymic(), author.getBirthDate());
-                if(authorFromDB != null) {
-                    newAuthors.add(authorFromDB);
-                } else {
-                    authorRepository.save(author);
-                    newAuthors.add(author);
+            editBook.setGenres(newGenres);
+            Set<Author> authorSet;
+            Set<Author> newAuthors = new HashSet<>();
+            if ((authorSet = editBook.getAuthors()) != null) {
+                for (Author author : authorSet) {
+                    Author authorFromDB = authorRepository.findBySurnameAndNameAndPatronymicAndBirthDate(author.getSurname(), author.getName(), author.getPatronymic(), author.getBirthDate());
+                    if (authorFromDB != null) {
+                        newAuthors.add(authorFromDB);
+                    } else {
+                        authorRepository.save(author);
+                        newAuthors.add(author);
+                    }
                 }
             }
+            editBook.setAuthors(newAuthors);
+            bookRepository.save(editBook);
+        } else {
+            throw new BookNotFoundException();
         }
-        book.setAuthors(newAuthors);
-        bookRepository.save(book);
     }
 
     public void addBooks(List<Book> books) {
-        for(Book book : books) {
+        for (Book book : books) {
             advancedCreateBook(bookMapper.toDto(book));
         }
+    }
+
+    public BookDTO getBookById(Long bookId) {
+        return bookMapper.toDto(bookRepository.findBookById(bookId).orElseThrow(BookNotFoundException::new));
     }
 }

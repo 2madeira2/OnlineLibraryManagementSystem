@@ -6,6 +6,7 @@ import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
+import ru.madeira.onlinelibrarymanagementsystem.exception.BookNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookCopyRepository;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookRepository;
 
@@ -46,7 +47,7 @@ public class BookCopyService {
 
 
     public void addBookCopiesForBook(Long bookId, List<BookCopyDTO> bookCopies) {
-        Book book = bookRepository.findBookById(bookId);
+        Book book = bookRepository.findBookById(bookId).orElseThrow(BookNotFoundException::new);
         for(BookCopyDTO bookCopyDTO : bookCopies) {
             BookCopy bookCopy = new BookCopy();
             bookCopy.setIsBusy(bookCopyDTO.getIsBusy());
