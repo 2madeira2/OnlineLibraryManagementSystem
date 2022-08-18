@@ -72,4 +72,11 @@ public class GlobalExceptionHandler {
         return "Book not found!";
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({AuthorNotFoundException.class})
+    public String authorNotFoundExceptionHandler() {
+        return "Author not found!";
+    }
+
 }
