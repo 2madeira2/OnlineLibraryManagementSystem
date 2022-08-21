@@ -3,8 +3,11 @@ package ru.madeira.onlinelibrarymanagementsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
+import ru.madeira.onlinelibrarymanagementsystem.util.xml.adapter.LocalDateAdapter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
@@ -16,26 +19,37 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "author")
+@XmlRootElement(name = "author")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @XmlElement
     @Column(nullable = false)
     private String surname;
 
+    @XmlElement
     @Column(nullable = false)
     private String name;
 
+    @XmlElement
     private String patronymic;
 
     @Column(nullable = false)
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate birthDate;
 
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate deathDate;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
     @JsonBackReference
+    @XmlTransient
+    @ToString.Exclude
     private Set<Book> books;
 
     @Override

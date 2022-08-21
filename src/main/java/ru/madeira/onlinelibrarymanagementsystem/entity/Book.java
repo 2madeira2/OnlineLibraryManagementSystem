@@ -3,11 +3,9 @@ package ru.madeira.onlinelibrarymanagementsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,15 +16,20 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "book")
+@XmlRootElement(name = "book")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
 
     @Column(nullable = false, length = 100)
+    @XmlElement
     private String title;
 
     @Column(nullable = false)
+    @XmlElement
     private Integer year;
 
     @Column(length = 5000)
@@ -44,6 +47,9 @@ public class Book {
             joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
+    @XmlElement(name = "author")
+    @XmlElementWrapper(name="authors")
     private Set<Author> authors;
 
     @ManyToMany
@@ -53,6 +59,9 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
+    @XmlElement(name = "genre")
+    @XmlElementWrapper(name = "genres")
     private Set<Genre> genres;
 
     @ManyToMany
@@ -62,6 +71,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
     private Set<Tag> tags;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
