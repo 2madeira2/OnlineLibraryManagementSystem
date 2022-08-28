@@ -97,7 +97,7 @@ public class UserService {
         userRepository.save(currentUser);
     }
 
-    public void takeAwayUsersRights(Long id, List<String> roles) {
+    public UserDTO takeAwayUsersRights(Long id, List<String> roles) {
         User currentUser = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
         Iterator<Role> roleIterator = currentUser.getRoles().iterator();
         while(roleIterator.hasNext()) {
@@ -108,6 +108,6 @@ public class UserService {
                 }
             }
         }
-        userRepository.save(currentUser);
+        return userMapper.toDto(userRepository.save(currentUser));
     }
 }

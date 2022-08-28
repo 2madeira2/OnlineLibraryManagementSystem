@@ -91,8 +91,8 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}/takeAwayRights")
-    public void takeAwayUsersRights(@PathVariable Long id, @RequestParam List<String> roles) {
-        userService.takeAwayUsersRights(id, roles);
+    public UserDTO takeAwayUsersRights(@PathVariable Long id, @RequestParam List<String> roles) {
+        return userService.takeAwayUsersRights(id, roles);
     }
 
 }

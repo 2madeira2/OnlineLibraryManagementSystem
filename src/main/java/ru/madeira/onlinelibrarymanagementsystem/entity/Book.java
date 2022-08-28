@@ -49,7 +49,7 @@ public class Book {
     )
     @ToString.Exclude
     @XmlElement(name = "author")
-    @XmlElementWrapper(name="authors")
+    @XmlElementWrapper(name = "authors")
     private Set<Author> authors;
 
     @ManyToMany

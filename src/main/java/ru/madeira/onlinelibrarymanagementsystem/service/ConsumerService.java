@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Author;
-import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.util.xml.wrapper.Books;
 import ru.madeira.onlinelibrarymanagementsystem.util.xml.XmlParser;
 
