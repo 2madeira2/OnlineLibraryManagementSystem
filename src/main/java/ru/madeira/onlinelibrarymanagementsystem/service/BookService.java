@@ -1,5 +1,9 @@
 package ru.madeira.onlinelibrarymanagementsystem.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -12,8 +16,11 @@ import ru.madeira.onlinelibrarymanagementsystem.mapper.BookCopyMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.BookMapper;
 import ru.madeira.onlinelibrarymanagementsystem.mapper.TagMapper;
 import ru.madeira.onlinelibrarymanagementsystem.repository.*;
+import ru.madeira.onlinelibrarymanagementsystem.util.xml.XmlParser;
+import ru.madeira.onlinelibrarymanagementsystem.util.xml.wrapper.Books;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +28,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
@@ -32,18 +40,9 @@ public class BookService {
     private final BookMapper bookMapper;
     private final TagMapper tagMapper;
     private final BookCopyMapper bookCopyMapper;
+    private final XmlMapper xmlMapper = XmlMapper.builder().addModule(new JavaTimeModule()).build();
+    private final XmlParser xmlParser;
 
-    public BookService(BookRepository bookRepository, TagRepository tagRepository, GenreRepository genreRepository, AuthorRepository authorRepository, UserHistoryRepository userHistoryRepository, BookCopyRepository bookCopyRepository, BookMapper bookMapper, TagMapper tagMapper, BookCopyMapper bookCopyMapper) {
-        this.bookRepository = bookRepository;
-        this.tagRepository = tagRepository;
-        this.genreRepository = genreRepository;
-        this.authorRepository = authorRepository;
-        this.userHistoryRepository = userHistoryRepository;
-        this.bookCopyRepository = bookCopyRepository;
-        this.bookMapper = bookMapper;
-        this.tagMapper = tagMapper;
-        this.bookCopyMapper = bookCopyMapper;
-    }
 
     public List<BookDTO> getAllBooks(Specification<Book> bookSpecification, Pageable pageable) {
         return bookRepository.findAll(bookSpecification, pageable)
@@ -162,5 +161,11 @@ public class BookService {
 
     public BookDTO getBookById(Long bookId) {
         return bookMapper.toDto(bookRepository.findBookById(bookId).orElseThrow(BookNotFoundException::new));
+    }
+
+    public void parseXmlAndAddBooks(String bookXml) throws JAXBException {
+        xmlMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+        Books books = (Books) xmlParser.getParseObjectFromXml(bookXml, Books.class, Author.class);
+        addBooks(books.getBooks());
     }
 }

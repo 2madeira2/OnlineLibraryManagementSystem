@@ -47,12 +47,12 @@ public class UserService {
     }
 
     public UserDTO createNewUser(UserDTO user) {
-        if(userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
+        if (userRepository.existsByLoginOrReadersTicketNumber(user.getLogin(), user.getReadersTicketNumber())) {
             throw new UserAlreadyExistsInSystemException();
         }
         User newUser = userMapper.toUser(user);
         Set<Role> currentUserRoles = new HashSet<>();
-        for(RoleDTO roleDTO : user.getRoles()) {
+        for (RoleDTO roleDTO : user.getRoles()) {
             currentUserRoles.add(roleService.findRoleByName(roleDTO.getName()));
         }
         newUser.setRoles(currentUserRoles);
@@ -63,7 +63,7 @@ public class UserService {
     }
 
     public UserDTO getUserById(Long id) {
-         return userMapper.toDto(userRepository.findUserById(id).orElseThrow(UserNotFoundException::new));
+        return userMapper.toDto(userRepository.findUserById(id).orElseThrow(UserNotFoundException::new));
     }
 
     public List<User> getAllUsersWhichIdInList(List<Long> idList) {
@@ -76,7 +76,7 @@ public class UserService {
 
     public UserDTO editMyAccountData(String oldLogin, String newLogin, String email, String password) {
         User userForEdit = userRepository.findUserByLogin(oldLogin).orElseThrow(UserNotFoundException::new);
-        if(userRepository.existsByLoginOrEmail(newLogin, email)) {
+        if (userRepository.existsByLoginOrEmail(newLogin, email)) {
             throw new NonOriginalDataForSystemException();
         }
         userForEdit.setEmail(email);
@@ -88,7 +88,7 @@ public class UserService {
     public void addRoleToUser(Long id, String role) {
         User currentUser = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
         Role newRole = roleService.findRoleByName(role);
-        if(newRole == null) {
+        if (newRole == null) {
             newRole = new Role();
             newRole.setName(role);
             roleService.createNewRole(newRole);
@@ -100,10 +100,10 @@ public class UserService {
     public UserDTO takeAwayUsersRights(Long id, List<String> roles) {
         User currentUser = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
         Iterator<Role> roleIterator = currentUser.getRoles().iterator();
-        while(roleIterator.hasNext()) {
+        while (roleIterator.hasNext()) {
             Role currentRole = roleIterator.next();
-            for(String role : roles) {
-                if(currentRole.getName().equals(role)){
+            for (String role : roles) {
+                if (currentRole.getName().equals(role)) {
                     roleIterator.remove();
                 }
             }

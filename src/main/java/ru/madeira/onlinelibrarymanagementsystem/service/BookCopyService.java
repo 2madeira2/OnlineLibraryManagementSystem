@@ -6,7 +6,9 @@ import ru.madeira.onlinelibrarymanagementsystem.dto.UserHistoryDTO;
 import ru.madeira.onlinelibrarymanagementsystem.entity.Book;
 import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.entity.UserHistory;
+import ru.madeira.onlinelibrarymanagementsystem.exception.BookCopyNotExistsException;
 import ru.madeira.onlinelibrarymanagementsystem.exception.BookNotFoundException;
+import ru.madeira.onlinelibrarymanagementsystem.exception.FreeBookCopiesNotFoundException;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookCopyRepository;
 import ru.madeira.onlinelibrarymanagementsystem.repository.BookRepository;
 
@@ -29,14 +31,14 @@ public class BookCopyService {
     @Transactional
     public void lendBookCopy(Long bookId) {
         Long bookCopyId = userHistoryService.createNewUserHistoryRecord(bookId);
-        BookCopy bookCopy = bookCopyRepository.findById(bookCopyId).get();
+        BookCopy bookCopy = bookCopyRepository.findById(bookCopyId).orElseThrow(BookCopyNotExistsException::new);
         bookCopy.setIsBusy(true);
         bookCopyRepository.save(bookCopy);
     }
 
     @Transactional
     public void releaseBookCopy(Long bookCopyId) {
-        BookCopy bookCopy = bookCopyRepository.getBookCopyById(bookCopyId).get();
+        BookCopy bookCopy = bookCopyRepository.getBookCopyById(bookCopyId).orElseThrow(BookCopyNotExistsException::new);
         bookCopy.setIsBusy(false);
         bookCopyRepository.save(bookCopy);
     }
@@ -48,7 +50,7 @@ public class BookCopyService {
 
     public void addBookCopiesForBook(Long bookId, List<BookCopyDTO> bookCopies) {
         Book book = bookRepository.findBookById(bookId).orElseThrow(BookNotFoundException::new);
-        for(BookCopyDTO bookCopyDTO : bookCopies) {
+        for (BookCopyDTO bookCopyDTO : bookCopies) {
             BookCopy bookCopy = new BookCopy();
             bookCopy.setIsBusy(bookCopyDTO.getIsBusy());
             bookCopy.setBook(book);

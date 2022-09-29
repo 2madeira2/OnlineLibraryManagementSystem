@@ -6,6 +6,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,12 +20,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "genre")
+@XmlRootElement(name = "genre")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 75)
+    @XmlElement
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")

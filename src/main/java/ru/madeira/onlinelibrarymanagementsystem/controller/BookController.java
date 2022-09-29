@@ -1,49 +1,36 @@
 package ru.madeira.onlinelibrarymanagementsystem.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.madeira.onlinelibrarymanagementsystem.criteria.BookSearchCriteria;
 import ru.madeira.onlinelibrarymanagementsystem.dto.*;
-import ru.madeira.onlinelibrarymanagementsystem.entity.BookCopy;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookCopyService;
 import ru.madeira.onlinelibrarymanagementsystem.service.BookService;
 import ru.madeira.onlinelibrarymanagementsystem.service.UserHistoryService;
 import ru.madeira.onlinelibrarymanagementsystem.specification.BookSpecification;
 
-import java.time.LocalDate;
+import javax.xml.bind.JAXBException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@AllArgsConstructor
 public class BookController {
 
-    private BookService bookService;
-    private BookCopyService bookCopyService;
-    private UserHistoryService userHistoryService;
+    private final BookService bookService;
+    private final BookCopyService bookCopyService;
+    private final UserHistoryService userHistoryService;
 
-    @Autowired
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
-    }
-
-    @Autowired
-    public void setBookCopyService(BookCopyService bookCopyService) {
-        this.bookCopyService = bookCopyService;
-    }
-
-    @Autowired
-    public void setUserHistoryService(UserHistoryService userHistoryService) {
-        this.userHistoryService = userHistoryService;
-    }
-//добавить сортировку и фильтрацию по жанру, по автору, по названию, по году написания и тд
+    //добавить сортировку и фильтрацию по жанру, по автору, по названию, по году написания и тд
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDTO> getAllBooks(@RequestParam(required = false) String word,
+    public List<BookDTO> getAllBooks(@RequestParam(required = false, name = "word") String word,
                                      @RequestParam(required = false) String genre,
                                      @RequestParam(required = false) Long minYear,
                                      @RequestParam(required = false) Long maxYear,
-                                     @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
+                                     @RequestParam(name = "size", value = "size", required = false, defaultValue = "10") Integer size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page) {
         return bookService.getAllBooks(BookSpecification.getBookSpecification(new BookSearchCriteria(word, genre, minYear, maxYear)), PageRequest.of(page, size));
     }
@@ -93,5 +80,10 @@ public class BookController {
     @PostMapping("/{bookId}/addBookCopies")
     public void addBookCopiesForBook(@PathVariable Long bookId, @RequestBody List<BookCopyDTO> bookCopies) {
         bookCopyService.addBookCopiesForBook(bookId, bookCopies);
+    }
+
+    @PostMapping("/updateBooksInLibrary")
+    public void getBooksXmlFromBookSupplier(@RequestBody String bookXml) throws JAXBException {
+        bookService.parseXmlAndAddBooks(bookXml);
     }
 }
